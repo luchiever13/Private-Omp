@@ -3,14 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <title>OMP Agency - vheee Admin</title>
+    <title>METROPOLIS OFFICIAL</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        /* SECURITY: Mencegah seleksi teks global */
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
-        /* Kecuali bagian yang memang harus diketik */
-        [contenteditable="true"], [contenteditable="true"] span { -webkit-user-select: text; user-select: text; }
-        
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-user-select: none; user-select: none; }
+        [contenteditable="true"], [contenteditable="true"] span { -webkit-user-select: text !important; user-select: text !important; }
         body { font-family: 'Roboto Mono', monospace; background-color: #000; color: #bdc3c7; line-height: 1.6; overflow-x: hidden; }
 
         /* --- LOCK SCREEN (Neon Version) --- */
@@ -19,10 +16,7 @@
             background: radial-gradient(circle, #0a0a0a 0%, #000 100%);
             z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
-        .lock-box { 
-            border: 2px solid #ff007f; padding: 40px; border-radius: 8px; text-align: center; 
-            background: #050505; box-shadow: 0 0 20px rgba(255, 0, 127, 0.4); 
-        }
+        .lock-box { border: 2px solid #ff007f; padding: 40px; border-radius: 8px; text-align: center; background: #050505; box-shadow: 0 0 20px rgba(255, 0, 127, 0.4); }
         .lock-box h1 { font-family: 'Oswald'; color: #ff007f; margin-bottom: 20px; letter-spacing: 5px; text-shadow: 0 0 10px #ff007f; }
         .lock-box input { background: #000; border: 1px solid #00f2fe; color: #00f2fe; padding: 12px; text-align: center; outline: none; width: 280px; margin-bottom: 25px; box-shadow: inset 0 0 5px #00f2fe; }
         .lock-box button { background: transparent; border: 2px solid #ff007f; color: #ff007f; padding: 12px 50px; cursor: pointer; font-family: 'Oswald'; text-transform: uppercase; font-weight: bold; box-shadow: 0 0 10px #ff007f; transition: 0.3s; }
@@ -36,13 +30,12 @@
         .omp-anim-text { font-family: 'Oswald', sans-serif; font-size: 16px; color: #00f2fe; position: absolute; white-space: nowrap; animation: moveRightLeft 12s linear infinite alternate; text-shadow: 0 0 5px #00f2fe; }
         @keyframes moveRightLeft { 0% { left: 0%; transform: translateX(0%); } 100% { left: 100%; transform: translateX(-100%); } }
 
-        /* --- TABLES (Neon & Precision) --- */
-        .table-wrapper { width: 100%; overflow-x: auto; margin-bottom: 50px; border: 1px solid #333; }
+        /* --- TABLES (Neon) --- */
+        .table-wrapper { width: 100%; overflow-x: auto; margin-bottom: 15px; border: 1px solid #333; }
         table { width: 100%; border-collapse: collapse; min-width: 1500px; table-layout: fixed; }
         th, td { border: 1px solid #222; padding: 10px 5px; text-align: center; font-size: 11px; }
         th { background: #0a0a0a; color: #ff007f; font-family: 'Oswald'; font-weight: 500; border-bottom: 2px solid #ff007f; text-shadow: 0 0 5px #ff007f; }
         
-        /* --- KHUSUS KOLOM MANUAL (GRADIENT NEON) --- */
         .col-nama, .col-target, .col-wd, .col-tgl, .col-push, .col-day {
             background: linear-gradient(90deg, #ff007f 0%, #00f2fe 100%);
             -webkit-background-clip: text; background-clip: text; color: transparent;
@@ -55,15 +48,20 @@
         .btn-ui { background: none; border: 1px solid #333; color: #888; cursor: pointer; padding: 6px 15px; font-family: 'Oswald'; margin-left: 10px; transition: 0.3s; }
         .btn-ui:hover { border-color: #00f2fe; color: #00f2fe; box-shadow: 0 0 10px #00f2fe; }
         .btn-danger:hover { border-color: #ff0000; color: #ff0000; box-shadow: 0 0 10px #ff0000; }
+        
+        /* Style Tombol Save Per Bulan */
+        .btn-save-month { border: 1px solid #00f2fe; color: #00f2fe; margin-bottom: 50px; width: 150px; font-size: 12px; }
+        .btn-save-month:hover { background: #00f2fe; color: #000; }
+
         h3 { color: #ff007f; font-family: 'Oswald'; border-left: 4px solid #ff007f; padding-left: 10px; margin-bottom: 10px; text-shadow: 0 0 5px #ff007f; }
     </style>
 </head>
-<body oncontextmenu="return false" onkeydown="return false">
+<body oncontextmenu="return false">
 
     <div id="lock-screen">
         <div class="lock-box">
-            <h1>SYSTEM LOCKED</h1>
-            <input type="password" id="access-key" placeholder="PASSWORD" onkeydown="if(event.keyCode==13) verifyKey()">
+            <h1>Metropolis System</h1>
+            <input type="password" id="access-key" placeholder="PASSWORD">
             <br>
             <button onclick="verifyKey()">Unlock</button>
         </div>
@@ -71,8 +69,8 @@
 
     <div id="main-content">
         <div class="header-ui">
-            <h2 class="title-text">OMP AGENCY</h2>
-            <div class="omp-anim-container"><div class="omp-anim-text">- Official Metropolitan Agency BY Momo OMP -</div></div>
+            <h2 class="title-text">METROPOLIS OFFICIAL</h2>
+            <div class="omp-anim-container"><div class="omp-anim-text">- Official Metropolis Agency BY Momo OMP -</div></div>
             <button onclick="resetAllData()" class="btn-ui btn-danger">RESET</button>
             <button onclick="logout()" class="btn-ui">LOGOUT</button>
         </div>
@@ -98,83 +96,59 @@
                     document.write(`<th class="col-total">TOTAL PUSH</th></tr></thead><tbody>`);
                     for(let r=1; r<=7; r++) {
                         document.write(`<tr><td class="col-no">${r}</td>`);
-                        document.write(`<td contenteditable="true" oninput="saveData(${mIdx},${r},1,this.innerText)"><span class="col-nama"></span></td>`);
-                        document.write(`<td contenteditable="true" oninput="saveData(${mIdx},${r},2,this.innerText)"><span class="col-target"></span></td>`);
-                        document.write(`<td contenteditable="true" oninput="saveData(${mIdx},${r},3,this.innerText)"><span class="col-wd"></span></td>`);
-                        document.write(`<td contenteditable="true" oninput="saveData(${mIdx},${r},4,this.innerText)"><span class="col-tgl"></span></td>`);
-                        document.write(`<td contenteditable="true" oninput="saveData(${mIdx},${r},5,this.innerText)"><span class="col-push"></span></td>`);
+                        document.write(`<td contenteditable="true" data-label="Nama" data-m="${month}" data-r="${r}" onblur="sendTelegramReport(this)" oninput="handleInput(${mIdx},${r},1,this)"><span class="col-nama"></span></td>`);
+                        document.write(`<td contenteditable="true" data-label="Target" data-m="${month}" data-r="${r}" onblur="sendTelegramReport(this)" oninput="handleInput(${mIdx},${r},2,this)"><span class="col-target"></span></td>`);
+                        document.write(`<td contenteditable="true" data-label="Total WD" data-m="${month}" data-r="${r}" onblur="sendTelegramReport(this)" oninput="handleInput(${mIdx},${r},3,this)"><span class="col-wd"></span></td>`);
+                        document.write(`<td contenteditable="true" data-label="Tgl Cair" data-m="${month}" data-r="${r}" onblur="sendTelegramReport(this)" oninput="handleInput(${mIdx},${r},4,this)"><span class="col-tgl"></span></td>`);
+                        document.write(`<td contenteditable="true" data-label="Tgl Push" data-m="${month}" data-r="${r}" onblur="sendTelegramReport(this)" oninput="handleInput(${mIdx},${r},5,this)"><span class="col-push"></span></td>`);
                         for(let c=6; c<=36; c++) {
-                            document.write(`<td contenteditable="true" data-type="day" oninput="handleInput(${mIdx},${r},${c},this)"><span class="col-day"></span></td>`);
+                            document.write(`<td contenteditable="true" data-type="day" data-label="Day-${c-5}" data-m="${month}" data-r="${r}" onblur="sendTelegramReport(this)" oninput="handleInput(${mIdx},${r},${c},this)"><span class="col-day"></span></td>`);
                         }
                         document.write(`<td id="total-m${mIdx}-r${r}" class="col-total"></td></tr>`);
                     }
                     document.write(`</tbody></table></div>`);
+                    // TOMBOL SAVE PER BULAN
+                    document.write(`<button onclick="manualSave('${month}')" class="btn-ui btn-save-month">SAVE ${month.toUpperCase()}</button>`);
                 });
             </script>
         </div>
     </div>
 
     <script>
-        // --- ADVANCED SECURITY SYSTEM ---
-        (function() {
-            // Mencegah F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
-            document.onkeydown = function(e) {
-                if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) {
-                    return false;
-                }
-            };
-            // Anti-Debugger Loop (Bikin pusing yang mau inspect)
-            setInterval(function() { debugger; }, 100);
-        })();
-
+        // --- CONFIGURATION ---
+        const BOT_TOKEN = "8681498719:AAEh0dnVq4mbLa-2-S0Mn4ds_7sbm5j4wto"; 
+        const CHAT_ID = "8643050323";
         const SECRET_KEY = "MOMO123";
-        const STORAGE_KEY = "OMP_SECURE_VHEEE_V6";
+        const STORAGE_KEY = "MOMO123";
 
+        // Security: Blokir F12 & View Source saja
+        document.onkeydown = function(e) {
+            if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) return false;
+        };
+
+        // Login System
         function verifyKey() { 
-            const input = document.getElementById('access-key').value;
-            if (input === SECRET_KEY) { 
+            if (document.getElementById('access-key').value === SECRET_KEY) { 
                 sessionStorage.setItem('isAuthorized', 'true'); 
                 showDashboard(); 
             } else { alert("ACCESS DENIED!"); } 
         }
-
-        function checkAccess() { 
-            if (sessionStorage.getItem('isAuthorized') === 'true') showDashboard();
-            loadData(); 
-        }
+        if (sessionStorage.getItem('isAuthorized') === 'true') showDashboard();
 
         function showDashboard() { 
             document.getElementById('lock-screen').style.display = 'none'; 
             document.getElementById('main-content').style.display = 'block'; 
-            // Setelah terbuka, aktifkan keyboard hanya untuk input
-            document.onkeydown = function(e) { if(e.keyCode == 123) return false; return true; };
+            loadData();
         }
 
         function logout() { sessionStorage.removeItem('isAuthorized'); location.reload(); }
+        function resetAllData() { if(confirm("Hapus database?")) { localStorage.removeItem(STORAGE_KEY); location.reload(); } }
 
-        function resetAllData() {
-            if(confirm("Hapus semua database, Boss?")) { localStorage.removeItem(STORAGE_KEY); location.reload(); }
-        }
-
+        // Data Handling
         function handleInput(m, r, c, el) { 
-            const spanText = el.querySelector('span').innerText;
-            saveData(m, r, c, spanText); 
+            const val = el.querySelector('span').innerText;
+            saveData(m, r, c, val); 
             calculateRowTotal(m, r); 
-        }
-
-        function calculateRowTotal(m, r) {
-            const tables = document.querySelectorAll('.table-wrapper table');
-            const rows = tables[m].querySelectorAll('tbody tr');
-            const cells = rows[r-1].querySelectorAll('td[data-type="day"]');
-            let sum = 0; 
-            cells.forEach(c => {
-                const spanText = c.querySelector('span').innerText;
-                let val = spanText.replace(/,/g,'').replace(/\./g,''); 
-                sum += parseFloat(val) || 0;
-            });
-            const res = document.getElementById(`total-m${m}-r${r}`);
-            res.innerText = sum > 0 ? sum.toLocaleString('id-ID') : "";
-            saveData(m, r, 99, res.innerText); 
         }
 
         function saveData(m, r, c, v) { 
@@ -183,18 +157,56 @@
             localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); 
         }
 
+        // Fungsi Tombol Save Manual
+        function manualSave(monthName) {
+            alert("Data bulan " + monthName + " berhasil diamankan di sistem!");
+        }
+
+        function calculateRowTotal(m, r) {
+            const tables = document.querySelectorAll('.table-wrapper table');
+            const cells = tables[m].querySelectorAll('tbody tr')[r-1].querySelectorAll('td[data-type="day"]');
+            let sum = 0; 
+            cells.forEach(c => { sum += parseFloat(c.querySelector('span').innerText.replace(/,/g,'').replace(/\./g,'')) || 0; });
+            const res = document.getElementById(`total-m${m}-r${r}`);
+            res.innerText = sum > 0 ? sum.toLocaleString('id-ID') : "";
+            saveData(m, r, 99, res.innerText); 
+        }
+
         function loadData() { 
             const d = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
             document.querySelectorAll('.table-wrapper table').forEach((t, m) => {
                 t.querySelectorAll('tbody tr').forEach((tr, r) => {
-                    const tds = tr.querySelectorAll('td:not(.col-no):not(.col-total)');
+                    const tds = tr.querySelectorAll('td[contenteditable="true"]');
                     tds.forEach((td, idx) => {
-                        const colIdx = idx + 1;
-                        const key = `m${m}r${r+1}c${colIdx}`;
+                        const key = `m${m}r${r+1}c${idx+1}`;
                         if(d[key]) td.querySelector('span').innerText = d[key];
                     });
-                    if(d[`m${m}r${r+1}c99`]) document.getElementById(`total-m${m}-r${r+1}`).innerText = d[`m${m}r${r+1}c99`];
+                    const totalKey = `m${m}r${r+1}c99`;
+                    if(d[totalKey]) document.getElementById(`total-m${m}-r${r+1}`).innerText = d[totalKey];
                 });
+            });
+        }
+
+        // --- TELEGRAM REPORT SYSTEM ---
+        function sendTelegramReport(el) {
+            const val = el.querySelector('span').innerText;
+            if (!val) return; 
+
+            const label = el.getAttribute('data-label');
+            const bulan = el.getAttribute('data-m');
+            const baris = el.getAttribute('data-r');
+            
+            const message = `🚀 *OMP AGENCY UPDATE*\n\n` +
+                            `📅 *Bulan:* ${bulan}\n` +
+                            `👤 *Baris ke:* ${baris}\n` +
+                            `📝 *Kolom:* ${label}\n` +
+                            `✅ *Input:* \`${val}\`\n\n` +
+                            `_Updated by Admin vheee_`;
+
+            fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ chat_id: CHAT_ID, text: message, parse_mode: "Markdown" })
             });
         }
     </script>
