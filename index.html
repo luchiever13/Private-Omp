@@ -6,7 +6,6 @@
     <title>METROPOLIS OFFICIAL</title>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        /* CSS Tetap Sama Sesuai Request */
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-user-select: none; user-select: none; }
         [contenteditable="true"], [contenteditable="true"] span { -webkit-user-select: text !important; user-select: text !important; }
         body { font-family: 'Roboto Mono', monospace; background-color: #000; color: #bdc3c7; line-height: 1.6; overflow-x: hidden; }
@@ -58,145 +57,106 @@
         </div>
 
         <div id="year-container">
-            <script>
-                const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-                months.forEach((month, mIdx) => {
-                    document.write(`
-                        <h3>${month.toUpperCase()}</h3>
-                        <div class="table-wrapper">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th class="col-no">No</th>
-                                        <th style="width:180px;">Nama Pemegang</th>
-                                        <th style="width:95px;">Target Push</th>
-                                        <th style="width:95px;">Total WD</th>
-                                        <th style="width:95px;">Tgl Cair WD</th>
-                                        <th style="width:95px;">Tgl Push</th>
-                    `);
-                    for(let t=1; t<=31; t++) document.write(`<th style="width:35px; color:#00f2fe;">${t}</th>`);
-                    document.write(`<th class="col-total">TOTAL PUSH</th></tr></thead><tbody>`);
-                    for(let r=1; r<=7; r++) {
-                        document.write(`<tr><td class="col-no">${r}</td>`);
-                        document.write(`<td contenteditable="true" data-label="Nama" data-m="${month}" data-r="${r}" onblur="sendTelegramReport(this)" oninput="handleInput(${mIdx},${r},1,this)"><span class="col-nama"></span></td>`);
-                        document.write(`<td contenteditable="true" data-label="Target" data-m="${month}" data-r="${r}" onblur="sendTelegramReport(this)" oninput="handleInput(${mIdx},${r},2,this)"><span class="col-target"></span></td>`);
-                        document.write(`<td contenteditable="true" data-label="Total WD" data-m="${month}" data-r="${r}" onblur="sendTelegramReport(this)" oninput="handleInput(${mIdx},${r},3,this)"><span class="col-wd"></span></td>`);
-                        document.write(`<td contenteditable="true" data-label="Tgl Cair" data-m="${month}" data-r="${r}" onblur="sendTelegramReport(this)" oninput="handleInput(${mIdx},${r},4,this)"><span class="col-tgl"></span></td>`);
-                        document.write(`<td contenteditable="true" data-label="Tgl Push" data-m="${month}" data-r="${r}" onblur="sendTelegramReport(this)" oninput="handleInput(${mIdx},${r},5,this)"><span class="col-push"></span></td>`);
-                        for(let c=6; c<=36; c++) {
-                            document.write(`<td contenteditable="true" data-type="day" data-label="Day-${c-5}" data-m="${month}" data-r="${r}" onblur="sendTelegramReport(this)" oninput="handleInput(${mIdx},${r},${c},this)"><span class="col-day"></span></td>`);
-                        }
-                        document.write(`<td id="total-m${mIdx}-r${r}" class="col-total"></td></tr>`);
-                    }
-                    document.write(`</tbody></table></div>`);
-                    document.write(`<button onclick="manualSave('${month}')" class="btn-ui btn-save-month">SAVE ${month.toUpperCase()}</button>`);
-                });
-            </script>
-        </div>
+            </div>
     </div>
 
     <script>
-        // --- CONFIGURATION ---
         const BOT_TOKEN = "8681498719:AAEh0dnVq4mbLa-2-S0Mn4ds_7sbm5j4wto"; 
         const CHAT_ID = "8643050323";
         const SECRET_KEY = "MOMO123";
-        const STORAGE_KEY = "METROPOLIS_DATA_SECURE"; // Ganti agar tidak bentrok dengan Password
+        const STORAGE_KEY = "DB_METROPOLIS_FINAL"; 
 
-        document.onkeydown = function(e) {
-            if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) return false;
-        };
+        const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 
-        function verifyKey() { 
-            if (document.getElementById('access-key').value === SECRET_KEY) { 
-                sessionStorage.setItem('isAuthorized', 'true'); 
-                showDashboard(); 
-            } else { alert("ACCESS DENIED!"); } 
+        // 1. Generate Tabel lewat JS (Lebih stabil untuk loading data)
+        function generateTables() {
+            let html = "";
+            months.forEach((month, mIdx) => {
+                html += `<h3>${month.toUpperCase()}</h3><div class="table-wrapper"><table><thead><tr>
+                    <th class="col-no">No</th><th style="width:180px;">Nama Pemegang</th><th style="width:95px;">Target Push</th>
+                    <th style="width:95px;">Total WD</th><th style="width:95px;">Tgl Cair WD</th><th style="width:95px;">Tgl Push</th>`;
+                for(let t=1; t<=31; t++) html += `<th style="width:35px; color:#00f2fe;">${t}</th>`;
+                html += `<th class="col-total">TOTAL PUSH</th></tr></thead><tbody>`;
+                
+                for(let r=1; r<=7; r++) {
+                    html += `<tr><td class="col-no">${r}</td>
+                    <td contenteditable="true" data-m="${mIdx}" data-r="${r}" data-c="1" onblur="sendTelegramReport(this)" oninput="updateCell(${mIdx},${r},1,this)"><span class="col-nama"></span></td>
+                    <td contenteditable="true" data-m="${mIdx}" data-r="${r}" data-c="2" onblur="sendTelegramReport(this)" oninput="updateCell(${mIdx},${r},2,this)"><span class="col-target"></span></td>
+                    <td contenteditable="true" data-m="${mIdx}" data-r="${r}" data-c="3" onblur="sendTelegramReport(this)" oninput="updateCell(${mIdx},${r},3,this)"><span class="col-wd"></span></td>
+                    <td contenteditable="true" data-m="${mIdx}" data-r="${r}" data-c="4" onblur="sendTelegramReport(this)" oninput="updateCell(${mIdx},${r},4,this)"><span class="col-tgl"></span></td>
+                    <td contenteditable="true" data-m="${mIdx}" data-r="${r}" data-c="5" onblur="sendTelegramReport(this)" oninput="updateCell(${mIdx},${r},5,this)"><span class="col-push"></span></td>`;
+                    for(let c=6; c<=36; c++) {
+                        html += `<td contenteditable="true" data-type="day" data-m="${mIdx}" data-r="${r}" data-c="${c}" onblur="sendTelegramReport(this)" oninput="updateCell(${mIdx},${r},${c},this)"><span class="col-day"></span></td>`;
+                    }
+                    html += `<td id="total-m${mIdx}-r${r}" class="col-total"></td></tr>`;
+                }
+                html += `</tbody></table></div><button onclick="manualSave('${month}')" class="btn-ui btn-save-month">SAVE ${month.toUpperCase()}</button>`;
+            });
+            document.getElementById('year-container').innerHTML = html;
         }
 
-        if (sessionStorage.getItem('isAuthorized') === 'true') {
-            // Jalankan sedikit delay agar DOM siap
-            setTimeout(showDashboard, 100);
-        }
-
-        function showDashboard() { 
-            document.getElementById('lock-screen').style.display = 'none'; 
-            document.getElementById('main-content').style.display = 'block'; 
-            loadData();
-        }
-
-        function logout() { sessionStorage.removeItem('isAuthorized'); location.reload(); }
-        
-        function resetAllData() { 
-            if(confirm("Hapus seluruh database permanen?")) { 
-                localStorage.removeItem(STORAGE_KEY); 
-                location.reload(); 
-            } 
-        }
-
-        // Data Handling
-        function handleInput(m, r, c, el) { 
-            const val = el.querySelector('span').innerText;
-            saveData(m, r, c, val); 
-            calculateRowTotal(m, r); 
-        }
-
-        function saveData(m, r, c, v) { 
-            let d = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; 
-            d[`m${m}r${r}c${c}`] = v; 
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(d)); 
-        }
-
-        function manualSave(monthName) {
-            // Memastikan data ter-write ulang ke storage
-            const currentData = localStorage.getItem(STORAGE_KEY);
-            if(currentData) {
-                localStorage.setItem(STORAGE_KEY, currentData);
-                alert("DATABASE " + monthName.toUpperCase() + " DISIMPAN!");
-            }
+        // 2. Fungsi Simpan yang Lebih Galak
+        function updateCell(m, r, c, el) {
+            const val = el.innerText;
+            let d = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+            d[`m${m}r${r}c${c}`] = val;
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(d));
+            if (c >= 6) calculateRowTotal(m, r);
         }
 
         function calculateRowTotal(m, r) {
-            const tables = document.querySelectorAll('.table-wrapper table');
-            const row = tables[m].querySelectorAll('tbody tr')[r-1];
-            const cells = row.querySelectorAll('td[data-type="day"]');
-            let sum = 0; 
-            cells.forEach(c => { 
-                let val = c.querySelector('span').innerText.replace(/,/g,'').replace(/\./g,'');
-                sum += parseFloat(val) || 0; 
+            const rowCells = document.querySelectorAll(`td[data-type="day"][data-m="${m}"][data-r="${r}"]`);
+            let sum = 0;
+            rowCells.forEach(cell => {
+                let val = cell.innerText.replace(/[^\d]/g, '');
+                sum += parseInt(val) || 0;
             });
-            const res = document.getElementById(`total-m${m}-r${r}`);
-            res.innerText = sum > 0 ? sum.toLocaleString('id-ID') : "";
-            saveData(m, r, 99, res.innerText); 
+            const display = document.getElementById(`total-m${m}-r${r}`);
+            if(display) display.innerText = sum > 0 ? sum.toLocaleString('id-ID') : "";
         }
 
-        function loadData() { 
-            const dataStr = localStorage.getItem(STORAGE_KEY);
-            if (!dataStr) return;
-            const d = JSON.parse(dataStr);
-            
-            document.querySelectorAll('.table-wrapper table').forEach((t, m) => {
-                t.querySelectorAll('tbody tr').forEach((tr, r) => {
-                    const tds = tr.querySelectorAll('td[contenteditable="true"]');
-                    tds.forEach((td, idx) => {
-                        const key = `m${m}r${r+1}c${idx+1}`;
-                        if(d[key] !== undefined) {
-                            td.querySelector('span').innerText = d[key];
-                        }
-                    });
-                    const totalKey = `m${m}r${r+1}c99`;
-                    const totalEl = document.getElementById(`total-m${m}-r${r+1}`);
-                    if(d[totalKey] && totalEl) totalEl.innerText = d[totalKey];
-                });
+        function loadData() {
+            const d = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+            document.querySelectorAll('[contenteditable="true"]').forEach(el => {
+                const key = `m${el.dataset.m}r${el.dataset.r}c${el.dataset.c}`;
+                if (d[key]) el.querySelector('span').innerText = d[key];
             });
+            // Hitung ulang semua total
+            for(let m=0; m<12; m++) {
+                for(let r=1; r<=7; r++) calculateRowTotal(m, r);
+            }
         }
+
+        function manualSave(month) {
+            alert("SISTEM: Data " + month + " TELAH DIKUNCI KE STORAGE.");
+        }
+
+        // 3. Security & Login
+        function verifyKey() {
+            if (document.getElementById('access-key').value === SECRET_KEY) {
+                sessionStorage.setItem('isAuthorized', 'true');
+                showDashboard();
+            } else { alert("ACCESS DENIED!"); }
+        }
+
+        function showDashboard() {
+            document.getElementById('lock-screen').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+            generateTables(); // Buat tabel dulu
+            loadData();       // Baru masukkan data
+        }
+
+        if (sessionStorage.getItem('isAuthorized') === 'true') {
+            window.onload = showDashboard;
+        }
+
+        function logout() { sessionStorage.removeItem('isAuthorized'); location.reload(); }
+        function resetAllData() { if(confirm("Hapus Permanen?")) { localStorage.removeItem(STORAGE_KEY); location.reload(); } }
 
         function sendTelegramReport(el) {
-            const val = el.querySelector('span').innerText;
-            if (!val) return; 
-            const label = el.getAttribute('data-label');
-            const bulan = el.getAttribute('data-m');
-            const baris = el.getAttribute('data-r');
-            const message = `🚀 *METROPOLIS UPDATE*\n\n📅 *Bulan:* ${bulan}\n👤 *Baris:* ${baris}\n📝 *Kolom:* ${label}\n✅ *Input:* \`${val}\`\n\n_Admin: vheee_`;
+            const val = el.innerText;
+            if (!val) return;
+            const message = `🚀 *METROPOLIS UPDATE*\n\n📅 *Bulan:* ${months[el.dataset.m]}\n👤 *Baris:* ${el.dataset.r}\n✅ *Input:* \`${val}\``;
             fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
